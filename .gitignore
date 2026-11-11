@@ -1,9 +1,23 @@
 # Generated plugin bundle and release assets
-main.js
-release-assets/
+/main.js
+/release-assets/
 
-# Node / editor files
-node_modules/
+# Dependencies
+/node_modules/
+
+# Obsidian Vault metadata and private workspace content
+.obsidian/
+.trash/
+analysis_reports/
+private/
+personal/
+*.canvas
+
+# Local environment and machine-specific files
+.env
+.env.*
+!.env.example
 .DS_Store
 .vscode/
 .idea/
+*.log
