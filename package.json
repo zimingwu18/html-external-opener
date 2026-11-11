@@ -1,0 +1,17 @@
+{
+  "name": "html-external-opener",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Open local HTML links from Markdown notes in an external browser.",
+  "author": "zimingwu18",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zimingwu18/html-external-opener.git"
+  },
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "test": "node --test",
+    "check": "npm test && npm run build && node scripts/check-manifest.mjs"
+  }
+}

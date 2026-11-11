@@ -1,0 +1,10 @@
+{
+  "id": "html-external-opener",
+  "name": "HTML External Opener",
+  "version": "1.0.0",
+  "minAppVersion": "1.5.0",
+  "description": "Open local HTML links from Markdown notes in the system default HTML app or a configured browser.",
+  "author": "zimingwu18",
+  "authorUrl": "https://github.com/zimingwu18",
+  "isDesktopOnly": true
+}

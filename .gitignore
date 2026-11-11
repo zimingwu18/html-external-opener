@@ -1,0 +1,9 @@
+# Generated plugin bundle and release assets
+main.js
+release-assets/
+
+# Node / editor files
+node_modules/
+.DS_Store
+.vscode/
+.idea/
