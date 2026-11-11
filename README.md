@@ -66,6 +66,9 @@ The editor command supports standard inline Markdown links and angle-bracket des
 
 ## Settings
 
+
+<img width="842" height="406" alt="image" src="https://github.com/user-attachments/assets/fa55354b-8cb6-4b75-8067-72b21582e0c7" />
+
 | Setting | Description |
 | --- | --- |
 | **Browser executable path** | Optional absolute path to a browser executable. Leave blank to use the operating system's default application for HTML files. |
@@ -149,6 +152,8 @@ HTML External Opener 是一款面向 **Obsidian 桌面版** 的轻量插件，�
 - **源码模式 / 实时预览：** 将光标放在 Markdown 链接内部，打开命令面板并执行 **Open HTML link at cursor in external browser**。
 
 ### 设置
+
+<img width="842" height="406" alt="image" src="https://github.com/user-attachments/assets/77983676-c8fe-474b-ad66-7ca8645dbe47" />
 
 - **Browser executable path：** 浏览器可执行文件的绝对路径。留空则使用操作系统默认 HTML 文件关联。
 - **HTML extensions：** 需要外部打开的扩展名，默认 `html, htm`。
