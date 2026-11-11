@@ -1,150 +1,173 @@
+<div align="center">
+
 # HTML External Opener
 
-Open local HTML links in Markdown notes with your operating system's default application or a browser executable you choose.
+**Open local HTML links from Obsidian Markdown notes in your external browser.**
 
-[中文说明](#中文说明)
+<p>
+  <img src="https://img.shields.io/badge/Obsidian-Desktop-7C3AED?style=flat-square&logo=obsidian&logoColor=white" alt="Obsidian Desktop" />
+  <img src="https://img.shields.io/badge/Platform-Windows%20%7C%20macOS%20%7C%20Linux-2563EB?style=flat-square" alt="Windows, macOS and Linux" />
+  <img src="https://img.shields.io/github/license/zimingwu18/html-external-opener?style=flat-square" alt="MIT License" />
+  <img src="https://img.shields.io/github/actions/workflow/status/zimingwu18/html-external-opener/ci.yml?branch=main&style=flat-square&label=CI" alt="CI status" />
+</p>
+
+[Features](#features) · [Installation](#installation) · [Usage](#usage) · [Security](#security) · [中文说明](#中文说明)
+
+</div>
+
+---
+
+HTML External Opener is a lightweight **Obsidian Desktop** plugin for people who keep interactive demos, visualizations, reports, and standalone web pages alongside their Markdown notes. It opens local `.html` and `.htm` links in the operating system's default application or a browser executable you choose.
 
 ## Features
 
-- Open local `.html` and `.htm` links from rendered Markdown with one click.
-- Resolve relative links from the current Markdown note, including links with URL-encoded spaces and non-ASCII characters.
-- Use the operating system's default application for HTML files, or configure Chrome, Edge, Firefox, or another browser executable.
-- Provide a Command Palette command for Source Mode and Live Preview: **Open HTML link at cursor in external browser**.
-- Restrict automatic handling to local HTML files resolved inside the current Vault.
-- No network requests, telemetry, analytics, ads, or external services.
-- Migrates browser path and click-interception preferences from the earlier prototype build.
-
-## Requirements
-
-- Obsidian Desktop 1.5.0 or later.
-- A local filesystem Vault. Remote or mobile adapters are not supported.
-- To use the default application, configure your operating system to open `.html` and `.htm` files with your preferred browser.
+- **One-click opening** — open local HTML links directly from Reading View.
+- **Vault-aware paths** — resolve relative links from the current Markdown note, including URL-encoded spaces and non-ASCII filenames.
+- **Your browser, your choice** — use the system file association or specify Chrome, Edge, Firefox, or another browser executable.
+- **Editor command** — open the HTML link under the cursor from Source Mode or Live Preview using the Command Palette.
+- **Vault boundary checks** — reject paths that resolve outside the current Vault, including symlink escapes.
+- **No tracking** — no network requests, telemetry, analytics, advertisements, or third-party runtime dependencies.
 
 ## Installation
 
 ### Community plugins
 
-After this project is approved and listed in the Obsidian Community Plugins directory:
+Once the plugin is approved and listed in the Obsidian Community Plugins directory:
 
 1. Open **Settings → Community plugins → Browse**.
 2. Search for **HTML External Opener**.
-3. Install and enable it.
+3. Select **Install**, then enable the plugin.
 
 ### Manual installation
 
-1. Download `main.js` and `manifest.json` from the latest [GitHub Release](https://github.com/zimingwu18/html-external-opener/releases).
-2. Create this folder in your Vault: `.obsidian/plugins/html-external-opener/`.
-3. Put both files directly in that folder.
-4. Restart Obsidian, then enable **HTML External Opener** under **Settings → Community plugins**.
+After a GitHub Release is available:
+
+1. Download `main.js` and `manifest.json` from [Releases](https://github.com/zimingwu18/html-external-opener/releases).
+2. Create `.obsidian/plugins/html-external-opener/` inside your Vault.
+3. Place both files directly in that folder.
+4. Restart Obsidian and enable **HTML External Opener** in **Settings → Community plugins**.
 
 ## Usage
 
-Given a Markdown note containing a relative link:
+Add a normal relative Markdown link to a local HTML file:
 
 ```markdown
-[Open the interactive lab](analysis_reports/07_basic_interactive_lab.html)
+[Open interactive demo](examples/interactive-demo.html)
 ```
 
-Open the note in Reading View and click the link. The plugin resolves the destination relative to the current note and opens the local HTML file outside Obsidian.
+- **Reading View:** click the rendered link. The plugin opens the local HTML file externally.
+- **Source Mode / Live Preview:** place the editor cursor inside the Markdown link, open the Command Palette, and run **Open HTML link at cursor in external browser**.
 
-For Source Mode or Live Preview, place the editor cursor inside the Markdown link and run **Open HTML link at cursor in external browser** from the Command Palette (`Ctrl+P` on Windows/Linux, `Cmd+P` on macOS).
-
-The command supports standard inline Markdown links, including angle-bracket destinations with spaces:
+The editor command supports standard inline Markdown links and angle-bracket destinations containing spaces:
 
 ```markdown
-[Open lab](<analysis reports/interactive lab.html>)
+[Open demo](<examples/my interactive demo.html>)
 ```
 
 ## Settings
 
 | Setting | Description |
 | --- | --- |
-| Browser executable path | Optional absolute path to a browser executable. Leave blank to use the operating system's default application for HTML files. |
-| HTML extensions | Comma-separated extensions. Defaults to `html, htm`. |
-| Intercept rendered Markdown links | Enable or disable automatic opening when clicking rendered Markdown links. |
+| **Browser executable path** | Optional absolute path to a browser executable. Leave blank to use the operating system's default application for HTML files. |
+| **HTML extensions** | Comma-separated extensions to open externally. Defaults to `html, htm`. |
+| **Intercept rendered Markdown links** | Enable or disable automatic opening when a local HTML link is clicked in Reading View. |
 
-Example Windows Chrome path:
+Example Chrome path on Windows:
 
 ```text
-C:\Program Files\Google\Chrome\Application\chrome.exe
+C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe
 ```
 
-When a browser executable is configured, the plugin launches it directly with `shell: false`. When the field is blank, Obsidian's Electron `shell.openPath` opens the file through the operating system's file association. The plugin does not build or execute a shell command.
+## Security
 
-## Security and privacy
+The plugin is designed to handle local Vault files rather than arbitrary URLs.
 
-- The plugin only handles local HTML links that Obsidian resolves to a file in the current Vault. Ordinary `http:`, `https:`, `mailto:`, `javascript:`, `file:`, and other protocol links are not intercepted.
-- Before opening a file, the plugin verifies that the resolved target is a regular file inside the Vault. Symlinks that resolve outside the Vault are rejected.
-- A configured browser path is treated as an executable selected by the user. It must be an absolute path to an existing file and is launched without a shell.
-- The plugin does not read or transmit note contents. It makes no network requests and collects no telemetry.
-- HTML files can contain JavaScript and load remote resources when opened in a browser. Only open HTML files you trust.
-- The plugin uses Node.js and Electron APIs and is therefore desktop-only.
+- Only local HTML links resolved by Obsidian inside the current Vault are eligible.
+- External protocols such as `http:`, `https:`, `mailto:`, `javascript:`, and `file:` are not intercepted.
+- Before opening a file, the plugin resolves its real filesystem path and verifies that it is a regular file inside the Vault. Symlinks that point outside the Vault are rejected.
+- A custom browser path must be an absolute path to an existing file. The browser is launched with `shell: false`; Markdown content is never used to construct a shell command.
+- The plugin does not read, upload, or transmit note contents. It makes no network requests and collects no usage data.
 
-## Limitations
+**Important:** HTML files can execute JavaScript and load remote resources when opened in a browser. Only open HTML files you trust. The plugin does not sandbox the contents of an HTML page.
 
-- The automatic click handler applies to rendered Markdown links. In editor Source Mode, use the Command Palette command. The command also provides a reliable fallback if a particular editor view does not expose a rendered link click.
-- With the default-application setting, the operating system opens the HTML file by its file association. A URL fragment such as `#section` is not forwarded in this mode. A configured browser receives a `file://` URL, including the fragment.
-- The plugin does not serve HTML over HTTP. Some pages that depend on web-server features (for example, fetch requests, module imports, or service workers) may require a local development server instead of `file://`.
+## Compatibility and limitations
+
+- Obsidian **Desktop 1.5.0 or later**.
+- Requires a local filesystem Vault. Obsidian Mobile and remote/custom Vault adapters are not supported.
+- The plugin opens files using `file://`; pages that depend on a web server (for example, some module imports, API requests, or service workers) may need a local development server.
+- With the operating-system default application, URL fragments such as `#section` are not forwarded. A configured browser receives the fragment.
 
 ## Development
 
-Requirements: Node.js 20 or later. There are no third-party runtime dependencies.
+Requirements: Node.js 20 or later.
 
 ```bash
+npm ci
 npm test
 npm run build
 npm run check
 ```
 
-`npm run build` creates the generated `main.js` and copies the release assets to `release-assets/`. Generated files are intentionally excluded from the Git repository; attach the files in `release-assets/` to a GitHub Release.
+The build generates `main.js` and copies the release files into `release-assets/`. Generated files are intentionally excluded from source control; attach `release-assets/main.js` and `release-assets/manifest.json` to a GitHub Release.
+
+See [CONTRIBUTING.md](./CONTRIBUTING.md) for contribution guidelines and [SECURITY.md](./SECURITY.md) for vulnerability reporting.
 
 ## License
 
-MIT. See [LICENSE](./LICENSE).
+Released under the [MIT License](./LICENSE).
 
 ---
 
 ## 中文说明
 
-HTML External Opener 用于将 Obsidian Markdown 笔记中的本地 HTML 链接交给系统默认程序或用户指定的浏览器打开。
+HTML External Opener 是一款面向 **Obsidian 桌面版** 的轻量插件，用于将 Markdown 笔记中的本地 HTML 链接交给系统默认程序或指定浏览器打开。
 
-### 功能
+### 功能特点
 
-- 在阅读视图中单击 `.html` / `.htm` 链接，使用外部浏览器打开。
-- 根据当前 Markdown 笔记解析 Vault 内相对路径，支持中文文件名和 URL 编码空格。
-- 可使用系统默认 HTML 打开程序，也可指定 Chrome、Edge、Firefox 等浏览器的可执行文件路径。
-- 源码模式和实时预览模式可通过命令面板执行 **Open HTML link at cursor in external browser**。
-- 只处理解析到当前 Vault 内的本地 HTML 文件。
-- 不联网、不收集遥测、不包含广告。
+- 在阅读视图中单击本地 `.html` / `.htm` 链接，即可使用外部浏览器打开。
+- 根据当前 Markdown 笔记解析 Vault 内的相对路径，支持中文文件名和 URL 编码空格。
+- 支持系统默认 HTML 打开程序，也支持指定 Chrome、Edge、Firefox 等浏览器。
+- 在源码模式或实时预览模式下，可通过命令面板打开光标所在的 HTML 链接。
+- 校验目标文件是否位于当前 Vault 内，拒绝越界路径和指向 Vault 外部的符号链接。
+- 不联网、不收集遥测或使用数据，不包含广告，也没有第三方运行时依赖。
 
 ### 安装
 
-插件通过 Obsidian 社区插件市场审核后，可在 **设置 → 第三方插件 → 浏览** 中搜索 `HTML External Opener`。
+**社区插件市场：** 待插件通过审核并上架后，在「设置 → 第三方插件 → 浏览」中搜索 **HTML External Opener**，安装并启用。
 
-手动安装时，从 [GitHub Releases](https://github.com/zimingwu18/html-external-opener/releases) 下载 `main.js` 和 `manifest.json`，放入 Vault 的 `.obsidian/plugins/html-external-opener/` 文件夹，重启 Obsidian 并启用插件。
+**手动安装：** 从 [GitHub Releases](https://github.com/zimingwu18/html-external-opener/releases) 下载 `main.js` 和 `manifest.json`，放入 Vault 的 `.obsidian/plugins/html-external-opener/` 文件夹，重启 Obsidian 后启用。
 
 ### 使用
 
-在 Markdown 笔记中使用普通相对链接即可：
+在 Markdown 笔记中添加普通相对链接：
 
 ```markdown
-[打开互动实验室](analysis_reports/07_基础知识互动实验室.html)
+[打开互动示例](examples/interactive-demo.html)
 ```
 
-在阅读视图中点击链接即可在外部浏览器打开。源码模式或实时预览模式下，将光标放在 Markdown 链接内，按 `Ctrl+P`，执行 `Open HTML link at cursor in external browser`。
+- **阅读视图：** 单击渲染后的链接，在外部浏览器打开。
+- **源码模式 / 实时预览：** 将光标放在 Markdown 链接内部，打开命令面板并执行 **Open HTML link at cursor in external browser**。
 
 ### 设置
 
-- **Browser executable path**：浏览器可执行文件的绝对路径。留空则使用系统默认 HTML 文件关联。
-- **HTML extensions**：需要外部打开的扩展名，默认 `html, htm`。
-- **Intercept rendered Markdown links**：控制是否自动拦截渲染视图中的 Markdown 链接。
-
-Windows Chrome 示例路径：
-
-```text
-C:\Program Files\Google\Chrome\Application\chrome.exe
-```
+- **Browser executable path：** 浏览器可执行文件的绝对路径。留空则使用操作系统默认 HTML 文件关联。
+- **HTML extensions：** 需要外部打开的扩展名，默认 `html, htm`。
+- **Intercept rendered Markdown links：** 控制是否自动拦截阅读视图中的本地 HTML 链接。
 
 ### 安全说明
 
-插件会检查目标文件是否为当前 Vault 内的普通文件；解析到 Vault 外部的符号链接会被拒绝。自定义浏览器通过不启用 shell 的进程调用方式启动。插件不发送笔记内容、不访问网络、不收集使用数据。HTML 页面本身可能执行 JavaScript 或加载远程资源，请只打开可信文件。
+插件只处理解析到当前 Vault 内的本地 HTML 文件。打开前会检查文件真实路径、文件类型和 Vault 边界；拒绝越界符号链接。自定义浏览器通过 `shell: false` 的方式启动。插件不读取或传输笔记内容，不联网，也不收集使用数据。
+
+请注意：HTML 页面本身仍可能执行 JavaScript 或加载远程资源。只打开可信来源的 HTML 文件。
+
+### 兼容性
+
+- Obsidian Desktop 1.5.0 或更高版本。
+- 需要本地文件系统 Vault；不支持移动端及远程 Vault 适配器。
+- 对依赖 Web Server 的页面功能，可能需要自行启动本地开发服务器。
+
+### 开发与许可
+
+需要 Node.js 20 或更高版本。运行 `npm ci`、`npm test`、`npm run build` 和 `npm run check` 可安装依赖、运行测试并构建发布文件。
+
+本项目采用 [MIT License](./LICENSE) 开源。
